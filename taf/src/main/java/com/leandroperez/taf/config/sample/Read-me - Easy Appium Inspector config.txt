@@ -1,0 +1,64 @@
+************************************************************************************
+##AUTHOR = Leandro H. Perez
+************************************************************************************
+*** Appium Inspector capabilities samples ***
+************************************************************************************
+****** Capabilities for Android:
+A)
+{
+  "platformName": "Android",
+  "appium:automationName": "UiAutomator2",
+  "appium:app": "/Users/leandroperez/Downloads/klar-125.3.0-arm64-v8a.apk"
+}
+
+
+B)
+{
+  "appium:appPackage": "org.mozilla.klar",
+  "appium:appActivity": "org.mozilla.focus.activity.MainActivity",
+  "platformName": "Android",
+  "appium:automationName": "UiAutomator2"
+}
+************************************************************************************
+
+
+
+
+
+************************************************************************************
+****** Capabilities for iOS:
+A)
+{
+  "platformName": "iOS",
+  "appium:automationName": "XCUITest",
+  "appium:bundleId": "org.mozilla.ios.Firefox"
+}
+
+B)
+{
+  "platformName": "iOS",
+  "appium:automationName": "XCUITest",
+  "appium:bundleId": "org.mozilla.ios.Firefox",
+  "appium:deviceName": "iPhone 16 Pro"
+}
+
+C)
+{
+  "platformName": "iOS",
+  "appium:automationName": "XCUITest",
+  "appium:bundleId": "org.mozilla.ios.Firefox",
+  "appium:deviceName": "iPhone 16 Pro",
+  "appium:platformVersion": "18.2"
+}
+
+
+D)
+{
+  "platformName": "iOS",
+  "appium:automationName": "XCUITest",
+  "appium:app": "/Users/leandroperez/Downloads/your.app"
+}
+************************************************************************************
+
+
+
