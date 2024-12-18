@@ -3,13 +3,17 @@ package com.leandroperez.taf.sut.mobile.firefoxapp.pom.step;
 import com.leandroperez.taf.core.Session;
 import com.leandroperez.taf.core.enumerator.PlatformInTest;
 import com.leandroperez.taf.core.enumerator.TestExecutionStrategy;
+import com.leandroperez.taf.sut.mobile.firefoxapp.pom.page.ExampleMobilePage;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class BaseExampleMobileStepDefinitons {
 
-    Session session = new Session();
+    Session session = null;
 
     public void initDefaultSession() {
         System.out.println("initDefaultSession()");
@@ -27,6 +31,7 @@ public class BaseExampleMobileStepDefinitons {
         System.out.println("initSession() in platform: " + platformInTest);
         try{
             System.out.println("initiating Session");
+            session = new Session();
             session.startSession(platformInTest, TestExecutionStrategy.LOCAL);
 
         } catch (Exception e) {
@@ -35,7 +40,13 @@ public class BaseExampleMobileStepDefinitons {
         }
     }
 
-    @After
+    public void AssertInitSession(String os) {
+        assertTrue(os != null && !os.isEmpty(), "Invalid value to OS");
+        PlatformInTest platform = PlatformInTest.valueOf(os.toUpperCase());
+        initSession(platform);
+        assertNotNull(session, "Error in test: Session is null");
+    }
+
     public void closeSession() {
         System.out.println("closeSession()");
         try{

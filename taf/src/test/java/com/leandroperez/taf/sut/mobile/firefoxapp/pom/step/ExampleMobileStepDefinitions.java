@@ -3,6 +3,7 @@ package com.leandroperez.taf.sut.mobile.firefoxapp.pom.step;
 import com.leandroperez.taf.core.Session;
 import com.leandroperez.taf.core.enumerator.PlatformInTest;
 import com.leandroperez.taf.core.enumerator.TestExecutionStrategy;
+import com.leandroperez.taf.sut.mobile.firefoxapp.pom.page.BaseMobilePage;
 import com.leandroperez.taf.sut.mobile.firefoxapp.pom.page.ExampleMobilePage;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,14 +14,20 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 
-public class ExampleMobileStepDefinitions extends BaseExampleMobileStepDefinitons{
+public class ExampleMobileStepDefinitions extends BaseExampleMobileStepDefinitons {
 
 
     ExampleMobilePage exampleMobilePage;
 
-    @Before
-    public void initSession() {
-        exampleMobilePage = new ExampleMobilePage();
+
+    public void initSessionAndPages(String os) {
+        AssertInitSession(os);
+        exampleMobilePage = new ExampleMobilePage(session);
+    }
+
+    @After
+    public  void closeSession(){
+        super.closeSession();
     }
 
     @Given("an example scenario of mobile app")
@@ -35,14 +42,11 @@ public class ExampleMobileStepDefinitions extends BaseExampleMobileStepDefiniton
 
     @Given("that the user opens the Firefox app on the operating system {string}")
     public void that_the_user_opens_the_firefox_app_on_the_operating_system(String os) {
-        assertTrue(os != null && !os.isEmpty(), "Invalid value to OS");
-        PlatformInTest platform = PlatformInTest.valueOf(os.toUpperCase());
-        super.initSession(platform);
+        initSessionAndPages(os);
     }
-    @When("type de url {string}")
-    public void type_de_url(String url) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    @When("type url {string}")
+    public void type_url(String url) {
+        exampleMobilePage.typeURL(url);
     }
     @When("type <ENTER>")
     public void type_enter() {

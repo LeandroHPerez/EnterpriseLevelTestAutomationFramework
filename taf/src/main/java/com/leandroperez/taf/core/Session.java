@@ -140,9 +140,7 @@ public class Session {
                     executeRuntimeCommandTxtFile();
                     AppiumDriverLocalService serviceAndroid = getAppiumDriverDefaultLocalService();
                     serviceAndroid.start();
-                    //this.androidDriver = new AndroidDriver(serviceAndroid, getConfiguratedMobileDesiredCapabilities());
                     DesiredCapabilities desiredCapabilities = getConfiguratedMobileDesiredCapabilities();
-
                     this.androidDriver = new AndroidDriver(serviceAndroid, desiredCapabilities);
                     this.appiumDriver = this.androidDriver;
                     break;
@@ -190,7 +188,7 @@ public class Session {
 
 
 
-        if (Boolean.parseBoolean(customProperties.get("isMobile"))) {
+        if (Boolean.parseBoolean(customProperties.get("isMobile"))) { //nao existe essa config. remover
             if (platformInTest == PlatformInTest.ANDROID) {
                 if (customProperties.get("useRemoteServiceUrlForAndroid").equals("yes")) {
                     this.androidDriver = new AndroidDriver(url, desiredCapabilities);
@@ -442,11 +440,16 @@ public class Session {
     }
 
     public AppiumDriver getAppiumDriver() {
-        if (Boolean.parseBoolean(customProperties.get("isMobile"))) {
+        /*if (Boolean.parseBoolean(customProperties.get("isMobile"))) { //nao existe isso de isMobile, arrancar
             return this.appiumDriver;
         }
+        else{
         throw new IllegalArgumentException("Appium driver requested, but session is not configured to use an Appium driver");
     }
+
+         */
+            return this.appiumDriver;
+        }
 
     public AndroidDriver getAndroidDriver() {
         if (Boolean.parseBoolean(customProperties.get("isAndroid"))) {
@@ -511,7 +514,7 @@ public class Session {
     }
 
     public void closeSession() {
-        if (Boolean.parseBoolean(customProperties.get("isMobile"))) {
+        if (Boolean.parseBoolean(customProperties.get("isMobile"))) { //nao existe isso, remover. nao ha essa config
             try {
                 if (customProperties.get("isAndroid").equals("true")) {
                     //appiumDriver.resetApp();
