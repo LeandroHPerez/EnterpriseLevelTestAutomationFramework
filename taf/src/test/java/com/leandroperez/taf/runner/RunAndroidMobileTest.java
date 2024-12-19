@@ -10,7 +10,7 @@ import org.junit.platform.suite.api.Suite;
 @IncludeEngines("cucumber")
 //@SelectClasspathResource("com.leandroperez.taf/src/test/resources/features/mobile")
 @SelectClasspathResource("features")
-@ConfigurationParameter(key = Constants.FEATURES_PROPERTY_NAME,value = "src/test/resources/features/mobile/firefoxapp")
+//@ConfigurationParameter(key = Constants.FEATURES_PROPERTY_NAME,value = "src/test/resources/features/mobile/firefoxapp")
 @ConfigurationParameter(key = Constants.GLUE_PROPERTY_NAME,value = "com/leandroperez/taf/sut/mobile/firefoxapp/pom/step")
 @ConfigurationParameter(key = Constants.FILTER_TAGS_PROPERTY_NAME,value = "@SISTEMA and @ANDROID")
 @ConfigurationParameter(key = Constants.EXECUTION_DRY_RUN_PROPERTY_NAME,value = "false")

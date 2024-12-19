@@ -40,9 +40,10 @@ public class Session {
     private IOSDriver iosDriver;
     PlatformInTest currentPlatformInTest = null;
     private HashMap<String, String> customProperties = new HashMap<>();
-    protected String prevBuild = "no";
     Reader reader;
     String decodedPath;
+    private boolean debugMode = false;
+
     {
         try {
             decodedPath = URLDecoder.decode(uiTestPropertiesPath.toString(), "UTF-8");
@@ -63,15 +64,20 @@ public class Session {
         loadOnlyCustomPropertiesNotNoneAndNotNull(prop);
     }
 
-    public void loadAllCustomProperties(Properties propLoaded){
+    public void loadAllCustomProperties(Properties propLoaded) {
         propLoaded.forEach((k, v) -> customProperties.put(k.toString(), v.toString()));
     }
 
-    public void loadOnlyCustomPropertiesNotNoneAndNotNull(Properties propLoaded){
+    public void loadOnlyCustomPropertiesNotNoneAndNotNull(Properties propLoaded) {
+        //DEBUG
+        System.out.println("*** debugMode in Session is: " + debugMode + " ***\n Set debugMode to true to see more data about properties loaded from file");
+
         propLoaded.forEach((k, v) -> {
             if (v != null && !"none".equalsIgnoreCase(v.toString()) && !"null".equalsIgnoreCase(v.toString())) {
                 customProperties.put(k.toString(), v.toString());
-                System.out.println("key: " + k.toString() + "value: " + v.toString());
+                if (debugMode) {
+                    System.out.println("key: " + k + "value: " + v);
+                }
             }
         });
     }
@@ -153,7 +159,8 @@ public class Session {
                     break;
             }
         } catch (Exception e) {
-            System.out.println(this.getClass().getSimpleName() + "." +  new Object(){}.getClass().getEnclosingMethod().getName() + "()\n" + "Error: " + e);
+            System.out.println(this.getClass().getSimpleName() + "." + new Object() {
+            }.getClass().getEnclosingMethod().getName() + "()\n" + "Error: " + e);
         }
     }
 
@@ -184,8 +191,6 @@ public class Session {
             System.out.println(this.getClass().getEnclosingMethod().getDeclaringClass().getEnclosingMethod().getName()
                     + "\n" + "Error: " + e);
         }
-
-
 
 
         if (Boolean.parseBoolean(customProperties.get("isMobile"))) { //nao existe essa config. remover
@@ -253,12 +258,11 @@ public class Session {
         /* TODO implement startGridSession */
     }
 
- private boolean isNotNullOrEmptyOrNoneValue(String string){
-        if(string == null)
+    private boolean isNotNullOrEmptyOrNoneValue(String string) {
+        if (string == null)
             return false;
         return !(string.equalsIgnoreCase("none") && string.isEmpty());
- }
-
+    }
 
 
     public DesiredCapabilities getConfiguratedMobileDesiredCapabilities() {
@@ -271,33 +275,39 @@ public class Session {
             String androidNoReset = customProperties.get("androidNoReset");
             String appPackage = customProperties.get("appPackage");
             String appActivity = customProperties.get("appActivity");
+            String app = customProperties.get("app");
 
-            if (isNotNullOrEmptyOrNoneValue(platformName)){
+
+            if (isNotNullOrEmptyOrNoneValue(platformName)) {
                 desiredCapabilities.setCapability("platformName", platformName);
             }
 
-            if (isNotNullOrEmptyOrNoneValue(automationName)){
+            if (isNotNullOrEmptyOrNoneValue(automationName)) {
                 desiredCapabilities.setCapability("appium:automationName", automationName);
             }
 
-            if (isNotNullOrEmptyOrNoneValue(platformVersion)){
+            if (isNotNullOrEmptyOrNoneValue(platformVersion)) {
                 desiredCapabilities.setCapability("appium:platformVersion", platformVersion);
             }
 
-            if (isNotNullOrEmptyOrNoneValue(deviceName)){
+            if (isNotNullOrEmptyOrNoneValue(deviceName)) {
                 desiredCapabilities.setCapability("appium:deviceName", deviceName);
             }
 
-            if (isNotNullOrEmptyOrNoneValue(androidNoReset)){
+            if (isNotNullOrEmptyOrNoneValue(androidNoReset)) {
                 desiredCapabilities.setCapability("appium:noReset", androidNoReset);
             }
 
-            if (isNotNullOrEmptyOrNoneValue(appPackage)){
+            if (isNotNullOrEmptyOrNoneValue(appPackage)) {
                 desiredCapabilities.setCapability("appium:appPackage", appPackage);
             }
 
-            if (isNotNullOrEmptyOrNoneValue(appActivity)){
+            if (isNotNullOrEmptyOrNoneValue(appActivity)) {
                 desiredCapabilities.setCapability("appium:appActivity", appActivity);
+            }
+
+            if (isNotNullOrEmptyOrNoneValue(app)) {
+                desiredCapabilities.setCapability("appium:app", app);
             }
 
         }
@@ -338,66 +348,16 @@ public class Session {
             FirefoxOptions firefoxOptions = getFireFoxOptions();
             desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, firefoxOptions);
         }
-        System.out.println("DesiredCapabilities: " + desiredCapabilities);
+
+        //DEBUG
+        System.out.println("*** debugMode in Session is: " + debugMode + " ***\n Set debugMode to true to see more data about Desired capabilities loaded");
+        if (debugMode) {
+            System.out.println("DesiredCapabilities loaded:\n" + desiredCapabilities);
+        }
+
         return desiredCapabilities;
     }
 
-
-
-    public DesiredCapabilities getConfiguratedMobileDesiredCapabilitiesOLD() {
-        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        if (Boolean.parseBoolean(customProperties.get("isAndroid"))) {
-            desiredCapabilities.setCapability("platformName", customProperties.get("platformName"));
-            desiredCapabilities.setCapability("platform Version", customProperties.get("platformVersion"));
-            desiredCapabilities.setCapability("deviceName", customProperties.get("deviceName"));
-            desiredCapabilities.setCapability("noReset", customProperties.get("noReset"));
-            desiredCapabilities.setCapability("appPackage", customProperties.get("appPackage"));
-            desiredCapabilities.setCapability("appActivity", customProperties.get("appActivity"));
-            desiredCapabilities.setCapability("automationName", customProperties.get("automationName"));
-            if (prevBuild.equals("yes")) {
-                desiredCapabilities.setCapability("app", customProperties.get("appOld"));
-            } else {
-                desiredCapabilities.setCapability("app", customProperties.get("app"));
-            }
-        }
-        if (Boolean.parseBoolean(customProperties.get("isIos"))) {
-            if (customProperties.get("localization").equals("yes")) {
-                System.out.println("localization value " + customProperties.get("localization"));
-                System.out.println("language value " + customProperties.get("appLanguage"));
-                desiredCapabilities.setCapability("platformName", customProperties.get("iosPlatformName"));
-                desiredCapabilities.setCapability("platformVersion", customProperties.get("iosPlatformVersion"));
-                desiredCapabilities.setCapability("deviceName", customProperties.get("iosDeviceName"));
-                desiredCapabilities.setCapability("app", customProperties.get("iosApp"));
-                desiredCapabilities.setCapability("noReset", customProperties.get("iosNoReset"));
-                desiredCapabilities.setCapability("automationName", customProperties.get("iosAutomationName"));
-                desiredCapabilities.setCapability("udid", customProperties.get("iosUdid"));
-                desiredCapabilities.setCapability("xcodeOrgId", customProperties.get("iosXcodeOrgId"));
-                desiredCapabilities.setCapability("xcodeSigningId", customProperties.get("iosXcodeSigningId"));
-                desiredCapabilities.setCapability("language", customProperties.get("appLanguage"));
-                desiredCapabilities.setCapability("locale", customProperties.get("appLanguage"));
-            } else {
-                desiredCapabilities.setCapability("platformName", customProperties.get("iosPlatformName"));
-                desiredCapabilities.setCapability("platformVersion", customProperties.get("iosPlatformVersion"));
-                desiredCapabilities.setCapability("deviceName", customProperties.get("iosDeviceName"));
-                desiredCapabilities.setCapability("app", customProperties.get("iosApp"));
-                desiredCapabilities.setCapability("noReset", customProperties.get("iosNoReset"));
-                desiredCapabilities.setCapability("automationName", customProperties.get("iosAutomationName"));
-                desiredCapabilities.setCapability("udid", customProperties.get("iosUdid"));
-                desiredCapabilities.setCapability("xcodeOrgId", customProperties.get("iosXcodeOrgId"));
-                desiredCapabilities.setCapability("xcodeSigningId", customProperties.get("iosXcodeSigningId"));
-                desiredCapabilities.setCapability("showIOSLog", customProperties.get("showIOSLog"));
-            }
-        }
-        if (customProperties.get("browserName").equals("chrome")) {
-            //ChromeOptions chromeOptions = getChromeOptions();
-            //desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-        }
-        if (customProperties.get("browserName").equals("firefox")) {
-            //FirefoxOptions firefoxOptions = getFireFoxOptions();
-            //desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, firefoxOptions);
-        }
-        return desiredCapabilities;
-    }
 
     public DesiredCapabilities getDesiredCapabilitiesSeeTest() {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
@@ -440,22 +400,11 @@ public class Session {
     }
 
     public AppiumDriver getAppiumDriver() {
-        /*if (Boolean.parseBoolean(customProperties.get("isMobile"))) { //nao existe isso de isMobile, arrancar
-            return this.appiumDriver;
-        }
-        else{
-        throw new IllegalArgumentException("Appium driver requested, but session is not configured to use an Appium driver");
+        return this.appiumDriver;
     }
 
-         */
-            return this.appiumDriver;
-        }
-
     public AndroidDriver getAndroidDriver() {
-        if (Boolean.parseBoolean(customProperties.get("isAndroid"))) {
-            return this.androidDriver;
-        }
-        throw new IllegalArgumentException("Android driver requested, but session is not configured to use an Android driver");
+        return this.androidDriver;
     }
 
     public IOSDriver getIosDriver() {
@@ -470,11 +419,10 @@ public class Session {
     }
 
     public WebDriver setWebDriverTimeout(long time, TimeUnit timeUnit) {
-        if(webDriver != null)
+        if (webDriver != null)
             getWebDriver().manage().timeouts().pageLoadTimeout(time, timeUnit);
         return this.webDriver;
     }
-
 
 
     public void quitWebDriverSession() {
@@ -508,35 +456,49 @@ public class Session {
     */
 
 
-
     public HashMap<String, String> getCustomProperties() {
         return customProperties;
     }
 
     public void closeSession() {
-        if (Boolean.parseBoolean(customProperties.get("isMobile"))) { //nao existe isso, remover. nao ha essa config
-            try {
-                if (customProperties.get("isAndroid").equals("true")) {
-                    //appiumDriver.resetApp();
-                }/* else if (!appiumDriver.removeApp(customProperties.get("iosBundleId"))) {
-                    //appiumDriver.resetApp();
-                }*/
-            } catch (Exception e) {
-                log.error("Error closing App");
-                e.printStackTrace();
-            }
 
+        //TODO rever isso
+        /*
+        try {
+
+
+            if (customProperties.get("isAndroid").equals("true")) {
+                //appiumDriver.resetApp();
+            }else if (!appiumDriver.removeApp(customProperties.get("iosBundleId"))) {
+                    //appiumDriver.resetApp();
+                }
+        } catch (Exception e) {
+            log.error("Error closing App");
+            e.printStackTrace();
+        }
+        */
+
+        if (appiumDriver != null) {
             try {
                 appiumDriver.quit();
+                androidDriver = null;
+                iosDriver = null;
+                //TODO verificar inclusão de código para service.stop() para fechar a sessão Appium
             } catch (Exception e) {
-                log.error("Error closing session");
+                log.error("Error closing session for appiumDriver");
                 e.printStackTrace();
             }
-        } else {
-            getWebDriver().quit();
         }
 
-        //TODO verificar inclusão de código para service.stop() para fechar a sessão Appium
+        if (webDriver != null) {
+            try {
+                getWebDriver().quit();
+            } catch (Exception e) {
+                log.error("Error closing session for webDriver");
+                e.printStackTrace();
+            }
+        }
+
     }
 
     private void executeRuntimeCommandTxtFile() {
@@ -603,5 +565,6 @@ public class Session {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         return firefoxOptions;
     }
+
 
 }
