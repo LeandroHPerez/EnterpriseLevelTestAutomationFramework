@@ -61,4 +61,9 @@ public class ExampleMobileStepDefinitions extends BaseExampleMobileStepDefiniton
     public void then_a_safe_shield_icon_will_be_displayed() {
         exampleMobilePage.verifyIfSafeShieldIconIsVisible();
     }
+
+    @And("and tap the {string} button on the mobile device keyboard")
+    public void andTapTheButtonOnTheKeyboard(String buttonTextLabel) {
+        exampleMobilePage.tapTheButtonOfMobileDeviceKeyboard(buttonTextLabel);
+    }
 }

@@ -1,6 +1,7 @@
 package com.leandroperez.taf.sut.mobile.firefoxapp.pom.page;
 
 import com.leandroperez.taf.constants.TimeConstants;
+import com.leandroperez.taf.core.mobile.locators.GenericMobileDeviceKeyboardElement;
 import com.leandroperez.taf.core.session.Session;
 
 import com.leandroperez.taf.utils.keyboardutil.MobileKeyboardUtil;
@@ -17,6 +18,7 @@ import java.time.Duration;
 public class BaseMobilePage {
 
     private Session session;
+    protected GenericMobileDeviceKeyboardElement genericMobileDeviceKeyboardElement = new GenericMobileDeviceKeyboardElement();
 
     public BaseMobilePage(Session session) {
         this.session = session;
@@ -73,6 +75,14 @@ public class BaseMobilePage {
         element.click();
     }
 
+    public boolean clickInElementSafe(WebElement element) {
+        if(element == null){
+            return false;
+        }
+        element.click();
+        return true;
+    }
+
     public void clickInElementIfIsPresentSafe(By by, Duration timeout) {
         getWebElementIfIsPresentSafe(by, timeout).click();
     }
@@ -84,6 +94,7 @@ public class BaseMobilePage {
         }
         return element;
     }
+
 
 
     public WebElement typeAtOnceInElementSafe(By by, String text, Duration timeout) {

@@ -23,7 +23,7 @@ public class ExampleMobileElement extends BaseMobilePage {
         return By.xpath(locatorSearchField);
     }
 
-    public  By getLocatorDontAllowButton() {
+    public By getLocatorDontAllowButton() {
         return By.xpath(locatorDontAllowButton);
     }
 

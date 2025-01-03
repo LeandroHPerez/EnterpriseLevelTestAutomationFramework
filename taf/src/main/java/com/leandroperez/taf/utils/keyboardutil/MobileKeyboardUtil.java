@@ -1,7 +1,6 @@
 package com.leandroperez.taf.utils.keyboardutil;
 
 
-
 import com.google.common.collect.ImmutableMap;
 import com.leandroperez.taf.core.session.Session;
 import com.leandroperez.taf.core.enumerator.PlatformInTest;
@@ -59,11 +58,9 @@ public class MobileKeyboardUtil {
     }
 
     private void pressKeyIOS(Session session, SpecialKey key, WebElement elementToType) {
-        IOSDriver driver = session.getIosDriver();
-        AppiumDriver appiumDriver2 = session.getAppiumDriver();
+        String actualText = "";
         switch (key) {
-            case ENTER:
-                String actualText = "";
+            case ENTER: //TODO review ENTER by keyboard on iOS
                 try {
                     actualText = elementToType.getText();
                 } catch (Exception e) {
@@ -74,10 +71,6 @@ public class MobileKeyboardUtil {
 
                 }
                 elementToType.sendKeys(actualText + "\n");
-                //elementToType.sendKeys("\n");
-                // Send the enter key using executeScript
-                //driver.executeScript("mobile: performEditorAction", ImmutableMap.of("action", "done"));
-
                 break;
             case SEARCH:
                 elementToType.sendKeys("\u2315");
