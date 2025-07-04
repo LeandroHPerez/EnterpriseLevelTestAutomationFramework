@@ -25,6 +25,7 @@ import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -510,7 +511,7 @@ public class Session {
 
     public WebDriver setWebDriverTimeout(long time, TimeUnit timeUnit) {
         if (webDriver != null)
-            getWebDriver().manage().timeouts().pageLoadTimeout(time, timeUnit);
+            getWebDriver().manage().timeouts().pageLoadTimeout(java.time.Duration.ofMillis(timeUnit.toMillis(time)));
         return this.webDriver;
     }
 
@@ -659,5 +660,23 @@ public class Session {
 
     public PlatformInTest getCurrentPlatformInTest() {
         return currentPlatformInTest;
+    }
+
+    public String getActualAppOrBundleForActivate() {
+        if(getAppiumDriver() == null) {
+            return null;
+        }
+        Object originalAppCapabilityObj = getAppiumDriver().getCapabilities().getCapability("appium:app");
+        Object originalBundleIDCapabilityObj = getAppiumDriver().getCapabilities().getCapability("appium:bundleId");
+        String originalApp = (originalAppCapabilityObj != null) ? originalAppCapabilityObj.toString() : null;
+        String originalBundleID = (originalBundleIDCapabilityObj != null) ? originalBundleIDCapabilityObj.toString() : null;
+        return Optional.ofNullable(originalBundleID).orElse(Optional.ofNullable(originalApp).orElse(null));
+    }
+
+    public void activateAppleSpringBoardApp() {
+        if (getIosDriver() == null) {
+            return;
+        }
+        getIosDriver().activateApp("com.apple.springboard");
     }
 }

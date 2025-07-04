@@ -63,4 +63,9 @@ public class ExampleMobileStepDefinitions extends BaseExampleMobileStepDefiniton
     public void andTapTheButtonOnTheKeyboard(String buttonTextLabel) {
         exampleMobilePage.tapTheButtonOfMobileDeviceKeyboard(buttonTextLabel);
     }
+
+    @And("dont translate the page")
+    public void dontTranslateThePage() {
+        exampleMobilePage.clickOnNotNowForTranslatePageIfIsVisible();
+    }
 }
