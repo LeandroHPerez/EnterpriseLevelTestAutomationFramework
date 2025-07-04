@@ -1,4 +1,4 @@
-package com.leandroperez.taf.runner;
+package com.leandroperez.taf.runner.example;
 
 import io.cucumber.junit.platform.engine.Constants;
 import org.junit.platform.suite.api.ConfigurationParameter;

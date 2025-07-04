@@ -3,6 +3,9 @@ package com.leandroperez.taf.sut.mobile.firefoxapp.pom.page;
 import com.leandroperez.taf.constants.TimeConstants;
 import com.leandroperez.taf.core.session.Session;
 import com.leandroperez.taf.sut.mobile.firefoxapp.pom.element.ExampleMobileElement;
+import com.leandroperez.taf.utils.keyboardutil.KeyMapper;
+import com.leandroperez.taf.utils.keyboardutil.MobileKeyboardUtil;
+import com.leandroperez.taf.utils.keyboardutil.constants.SpecialKey;
 import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,7 +27,20 @@ public class ExampleMobilePage extends ExampleMobileElement {
 
     public void typeURL(String url) {
         assertTrue(url != null && !url.isEmpty(), "Invalid value to url");
-        typeAtOnceInElementSafe(getLocatorInputSearchField(), url, TimeConstants.FIVE_SECONDS_DURATION);
+
+        MobileKeyboardUtil.handleSpecialKeyIfNeeded(url, getSessionAppiumDriver());
+
+
+        if(!MobileKeyboardUtil.isSpecialKey(url)) {
+            WebElement element = getWebElementIfIsVisibleSafe(getLocatorInputSearchField(), TimeConstants.FIVE_SECONDS_DURATION);
+            assertNotNull(element, "Error in test: Element is null");
+            /* Type the URL in the search field */
+            if (getSession().isIOS()) {
+                typeAtOnceInElementSafe(getLocatorInputSearchField(), url, TimeConstants.FIVE_SECONDS_DURATION);
+            } else {
+                typeSlowlyInElementIfIsPresentSafe(getLocatorInputSearchField(), url, TimeConstants.FIVE_SECONDS_DURATION);
+            }
+        }
         sleepSafe(TimeConstants.FIVE_HUNDRED_MILLIS);
     }
 
@@ -67,5 +83,10 @@ public class ExampleMobilePage extends ExampleMobileElement {
                 break;
         }
         return isTappedOnButton;
+    }
+
+    public void clickOnNotNowForTranslatePageIfIsVisible() {
+        clickInElementIfIsVisibleSafe(getLocatorNotNowForTranslatePage(), TimeConstants.TWO_SECONDS_DURATION);
+        sleepSafe(TimeConstants.ONE_SECOND_MILLIS);
     }
 }

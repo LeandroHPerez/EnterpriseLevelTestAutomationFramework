@@ -18,6 +18,8 @@ public class TimeConstants {
     public static final int THREE_SECONDS_MILLIS = 3000;
     public static final int FOUR_SECOND_MILLIS = 4000;
     public static final int FIVE_SECONDS_MILLIS = 5000;
+    public static final int SIX_SECONDS_MILLIS = 6000;
+    public static final int SEVEN_SECONDS_MILLIS = 7000;
     public static final int TEEN_SECONDS_MILLIS = 10000;
     public static final int FIFTEEN_SECONDS_MILLIS = 15000;
 
@@ -34,6 +36,10 @@ public class TimeConstants {
     public static final Duration FIVE_SECONDS_DURATION = Duration.ofSeconds(5);
     public static final Duration TEN_SECONDS_DURATION = Duration.ofSeconds(10);
     public static final Duration FIFTEEN_SECONDS_DURATION = Duration.ofSeconds(15);
+    public static final Duration TWENTY_SECONDS_DURATION = Duration.ofSeconds(20);
+    public static final Duration TWENTY_FIVE_SECONDS_DURATION = Duration.ofSeconds(25);
+    public static final Duration THIRTY_SECONDS_DURATION = Duration.ofSeconds(30);
+    public static final Duration FORTY_SECONDS_DURATION = Duration.ofSeconds(40);
 
     //configs
     public static final int DEFAULT_TIME_FOR_SLOWLY_TYPE = 50;

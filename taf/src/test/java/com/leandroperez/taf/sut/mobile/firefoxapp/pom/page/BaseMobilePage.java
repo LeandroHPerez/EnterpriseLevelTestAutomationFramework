@@ -140,6 +140,7 @@ public class BaseMobilePage {
             if (key == null) {
                 return null;
             }
+
             mobileKeyboardUtil.pressSpecialKey(session, key, elementToType);
             return elementToType;
         } catch (Exception e) {

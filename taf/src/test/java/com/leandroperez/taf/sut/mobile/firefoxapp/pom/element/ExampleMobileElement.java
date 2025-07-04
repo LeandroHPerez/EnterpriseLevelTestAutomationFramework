@@ -11,9 +11,10 @@ import org.openqa.selenium.By;
 public class ExampleMobileElement extends BaseMobilePage {
 
     String locatorCloseButton = "//android.view.View[@content-desc='Close'] | //XCUIElementTypeButton[@name='CloseButton']";
-    String locatorSearchField = "//android.widget.EditText[@resource-id='org.mozilla.klar:id/mozac_browser_toolbar_edit_url_view'] | //XCUIElementTypeTextField[@name='url']";
+    String locatorSearchField = "//android.widget.TextView[@resource-id='org.mozilla.firefox:id/toolbar_text']| //XCUIElementTypeTextField[@name='url']";
     String locatorDontAllowButton = "//android.widget.Button[@resource-id='com.android.permissioncontroller:id/permission_deny_button']";
-    String locatorSafeIconShield = "//android.widget.ImageView[@content-desc='Tracking Protection is on'] | //XCUIElementTypeButton[@name=\"TabLocationView.trackingProtectionButton\"]";
+    String locatorSafeIconShield = "//android.widget.ImageView[@content-desc='Site information'] | //XCUIElementTypeButton[@name=\"TabLocationView.trackingProtectionButton\"]";
+    String locatorNotNowForTranslatePage = "//android.widget.TextView[@text='Not now']";
 
     public ExampleMobileElement(Session session) {
         super(session);
@@ -33,5 +34,9 @@ public class ExampleMobileElement extends BaseMobilePage {
 
     public By getLocatorSafeIconShield() {
         return By.xpath(locatorSafeIconShield);
+    }
+
+    public By getLocatorNotNowForTranslatePage() {
+        return By.xpath(locatorNotNowForTranslatePage);
     }
 }
