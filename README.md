@@ -323,7 +323,7 @@ Entre no diretório do projeto e navegue até a pasta do projeto contendo o arqu
 Execute um Runner para o teste desejado, por exemplo:
 
 ```bash
- mvn test -Dtest=com.leandroperez.taf.runner.RunIOSMobileSampleTest
+ mvn test -Dtest=com.leandroperez.taf.runner.example.RunIOSMobileSampleTest
 ```
 
 
