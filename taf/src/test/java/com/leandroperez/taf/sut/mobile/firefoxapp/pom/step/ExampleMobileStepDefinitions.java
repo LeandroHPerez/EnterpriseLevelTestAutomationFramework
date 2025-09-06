@@ -68,4 +68,5 @@ public class ExampleMobileStepDefinitions extends BaseExampleMobileStepDefiniton
     public void dontTranslateThePage() {
         exampleMobilePage.clickOnNotNowForTranslatePageIfIsVisible();
     }
+
 }
